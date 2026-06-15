@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------- Fonts --------------------------------- */
+@font-face {
+  font-family: "P22 Mackinac";
+  src: url("/fonts/P22Mackinac-Book.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "P22 Mackinac";
+  src: url("/fonts/P22Mackinac-BookItalic.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Uncut Sans";
+  src: url("/fonts/UncutSans-Variable.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* --------------------------- shadcn theme tokens -------------------------- */
+/* Mapped onto the brand palette so shadcn-style utilities
+   (bg-background, text-muted-foreground, border-border, bg-secondary…)
+   render in-brand. Values are HSL channels. */
+@layer base {
+  :root {
+    --background: 0 0% 100%; /* Jasmine White */
+    --foreground: 200 14% 13%; /* Deep Earth-ish */
+
+    --muted: 30 16% 88%; /* Cream Linen */
+    --muted-foreground: 30 9% 46%; /* Cane-ish */
+
+    --secondary: 30 16% 88%; /* Cream Linen */
+    --secondary-foreground: 210 15% 26%; /* Deep Ocean */
+
+    --accent: 33 19% 75%; /* Light Sand */
+    --accent-foreground: 210 15% 26%;
+
+    --primary: 210 15% 26%; /* Deep Ocean */
+    --primary-foreground: 0 0% 100%;
+
+    --border: 30 12% 82%;
+    --input: 30 12% 82%;
+    --ring: 33 19% 60%;
+
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-jasmine text-earth font-sans antialiased;
+    font-feature-settings: "ss01", "cv01";
+  }
+  ::selection {
+    background: #38424c;
+    color: #fff;
+  }
+}
+
+/* --------------------------------- Helpers -------------------------------- */
+.font-display {
+  font-family: "P22 Mackinac", Georgia, serif;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hide scrollbars on horizontal slider tracks while keeping them scrollable */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

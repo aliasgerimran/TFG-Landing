@@ -13,7 +13,6 @@ export function Loader() {
   const [done, setDone] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
   const fillRef = useRef<HTMLDivElement>(null)
-  const hasRun = useRef(false)
 
   // Logo aspect ratio (3224 x 1491 ≈ 2.162:1)
   const logoMask: React.CSSProperties = {
@@ -28,10 +27,6 @@ export function Loader() {
   }
 
   useLayoutEffect(() => {
-    // Run exactly once, even under React StrictMode's double-invoke in dev.
-    if (hasRun.current) return
-    hasRun.current = true
-
     // Lock scroll while the loader is visible.
     document.body.style.overflow = "hidden"
 

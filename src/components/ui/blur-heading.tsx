@@ -26,6 +26,11 @@ interface BlurRevealProps {
   delay?: number
   duration?: number
   stagger?: number
+  /**
+   * When set, the reveal waits for this window event (fired once) instead of
+   * scroll-into-view — used to play the hero headline after the loader fades.
+   */
+  startEvent?: string
 }
 
 /**
@@ -43,6 +48,7 @@ const BlurReveal: React.FC<BlurRevealProps> = ({
   delay = 0,
   duration = 0.9,
   stagger = 0.022,
+  startEvent,
 }) => {
   const ref = useRef<HTMLElement>(null)
   const segments: HeadingPart[] =
@@ -51,23 +57,37 @@ const BlurReveal: React.FC<BlurRevealProps> = ({
   useLayoutEffect(() => {
     const el = ref.current
     if (!el) return
+    let removeListener: (() => void) | undefined
     const ctx = gsap.context(() => {
       const units = el.querySelectorAll<HTMLElement>(".reveal-unit")
       gsap.set(units, { opacity: 0, y: 16, filter: "blur(8px)" })
-      gsap.to(units, {
-        opacity: 1,
-        y: 0,
-        filter: "blur(0px)",
-        duration,
-        ease: "power3.out",
-        stagger,
-        delay,
-        clearProps: "filter,transform",
-        scrollTrigger: { trigger: el, start: "top 88%", once: true },
-      })
+      const play = (extra?: gsap.TweenVars) =>
+        gsap.to(units, {
+          opacity: 1,
+          y: 0,
+          filter: "blur(0px)",
+          duration,
+          ease: "power3.out",
+          stagger,
+          delay,
+          clearProps: "filter,transform",
+          ...extra,
+        })
+
+      if (startEvent) {
+        // Wait for an external signal (e.g. loader finished) rather than scroll.
+        const onSignal = () => play()
+        window.addEventListener(startEvent, onSignal, { once: true })
+        removeListener = () => window.removeEventListener(startEvent, onSignal)
+      } else {
+        play({ scrollTrigger: { trigger: el, start: "top 88%", once: true } })
+      }
     }, el)
-    return () => ctx.revert()
-  }, [parts, delay, duration, stagger])
+    return () => {
+      removeListener?.()
+      ctx.revert()
+    }
+  }, [parts, delay, duration, stagger, startEvent])
 
   const Tag = as as React.ElementType
 

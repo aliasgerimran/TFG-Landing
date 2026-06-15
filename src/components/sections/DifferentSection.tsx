@@ -2,13 +2,30 @@
 
 import { useState } from "react"
 import { ArrowLeft, ArrowRight } from "lucide-react"
-import { BlurHeading, BlurText } from "@/components/ui/blur-heading"
+import { BlurHeading, BlurText, type HeadingPart } from "@/components/ui/blur-heading"
+import { cn } from "@/lib/utils"
 
 interface Slide {
   title: string
   description: string
   image: string
 }
+
+/**
+ * Section title parts, hoisted to a stable reference so the blur reveal fires
+ * only once on scroll-in and does NOT replay when the slide index changes.
+ */
+const TITLE_PARTS: HeadingPart[] = [
+  { text: "What makes us " },
+  { text: "different", italic: true },
+]
+
+/**
+ * Fixed min-height for the slide text block (heading + body copy), sized to the
+ * LONGEST slide so the Prev / Next buttons never shift between slides. Copy
+ * top-aligns within this space. Tune per breakpoint here as copy changes.
+ */
+const TEXT_BLOCK_MIN_H = "min-h-[248px] sm:min-h-[224px] md:min-h-[208px]"
 
 const SLIDES: Slide[] = [
   {
@@ -75,7 +92,7 @@ export function DifferentSection() {
         <BlurHeading
           as="h2"
           className="text-center text-3xl text-cinnamon md:text-[44px]"
-          parts={[{ text: "What makes us " }, { text: "different", italic: true }]}
+          parts={TITLE_PARTS}
         />
 
         <div className="mt-16 grid items-center gap-12 md:mt-24 md:grid-cols-[40%_55%] md:justify-between md:gap-[5%]">
@@ -88,7 +105,7 @@ export function DifferentSection() {
               <span className="h-px w-[60px] bg-cane/30" />
             </div>
 
-            <div key={index}>
+            <div key={index} className={cn("flex flex-col", TEXT_BLOCK_MIN_H)}>
               <BlurHeading
                 as="h3"
                 className="mt-7 text-2xl text-cinnamon md:text-3xl"

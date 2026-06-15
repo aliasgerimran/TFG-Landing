@@ -26,6 +26,7 @@ export function Hero() {
       <div className="relative z-10 mx-auto flex h-full max-w-[1320px] flex-col items-center justify-center px-6 text-center">
         <BlurHeading
           as="h1"
+          startEvent="tfg:loader-complete"
           className="max-w-3xl text-balance text-[28px] leading-[1.18] text-jasmine sm:text-[34px] md:text-[42px]"
           parts={[
             { text: "Sri Lanka is the backdrop.\n" },

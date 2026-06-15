@@ -32,6 +32,8 @@ export function Loader() {
 
     const finish = () => {
       document.body.style.overflow = ""
+      // Signal the hero headline to begin its reveal now that the loader is gone.
+      window.dispatchEvent(new Event("tfg:loader-complete"))
       setDone(true)
     }
 

@@ -5,9 +5,9 @@ import gsap from "gsap"
 
 /**
  * Page-load intro screen. The Fabulous Getaway wordmark sits centred on a dark
- * field, rendered as a CSS mask: a Cream Linen "empty" logo with a Night Blue
- * fill that rises up to fill the logo shape as the page loads. When ready, the
- * whole loader fades out smoothly to reveal the site.
+ * field, rendered as a CSS mask: a Night Blue "empty" logo with a Cream Linen
+ * fill that wipes in left-to-right (dark-to-light) to fill the logo shape as the
+ * page loads. When ready, the whole loader fades out smoothly to reveal the site.
  */
 export function Loader() {
   const [done, setDone] = useState(false)
@@ -38,8 +38,8 @@ export function Loader() {
     const tl = gsap.timeline()
     tl.fromTo(
       fillRef.current,
-      { height: "0%" },
-      { height: "100%", duration: 1.9, ease: "power2.inOut" },
+      { width: "0%" },
+      { width: "100%", duration: 1.9, ease: "power2.inOut" },
     )
       // hold the full logo briefly
       .to({}, { duration: 0.35 })
@@ -65,8 +65,8 @@ export function Loader() {
       <div className="flex flex-col items-center">
         {/* Masked logo: cream base + rising night-blue fill */}
         <div className="relative h-[150px] w-[330px] sm:h-[170px] sm:w-[370px]" style={logoMask}>
-          <div className="absolute inset-0 bg-cream" />
-          <div ref={fillRef} className="absolute inset-x-0 bottom-0 h-0 bg-night" />
+          <div className="absolute inset-0 bg-night" />
+          <div ref={fillRef} className="absolute inset-y-0 left-0 w-0 bg-cream" />
         </div>
 
         {/* Supporting text */}

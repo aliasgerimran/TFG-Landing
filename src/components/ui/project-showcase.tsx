@@ -25,8 +25,26 @@ export function ProjectShowcase({ items }: ProjectShowcaseProps) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [smoothPosition, setSmoothPosition] = useState({ x: 0, y: 0 })
   const [isVisible, setIsVisible] = useState(false)
+  const [inView, setInView] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const animationRef = useRef<number | null>(null)
+
+  // Reveal each row one by one (slide up + fade) when the section scrolls in.
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.2 },
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
 
   useEffect(() => {
     const lerp = (start: number, end: number, factor: number) =>
@@ -102,13 +120,22 @@ export function ProjectShowcase({ items }: ProjectShowcaseProps) {
             className="group block cursor-pointer"
             onMouseEnter={() => handleMouseEnter(index)}
             onMouseLeave={handleMouseLeave}
+            style={{
+              opacity: inView ? 1 : 0,
+              transform: inView ? "translateY(0)" : "translateY(40px)",
+              transition:
+                "opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1)",
+              transitionDelay: `${index * 0.12}s`,
+            }}
           >
             <div className="relative border-t border-cane/25 py-10 transition-all duration-300 ease-out">
               {/* Row highlight */}
               <div
                 className={cn(
-                  "absolute inset-0 -mx-6 rounded-lg bg-cream/60 transition-all duration-300 ease-out",
-                  hoveredIndex === index ? "scale-100 opacity-100" : "scale-95 opacity-0",
+                  "absolute inset-0 -mx-6 bg-cream/60 transition-all duration-300 ease-out",
+                  hoveredIndex === index
+                    ? "scale-100 rounded-none opacity-100"
+                    : "scale-95 rounded-lg opacity-0",
                 )}
               />
 

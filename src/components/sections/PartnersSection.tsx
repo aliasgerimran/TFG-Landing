@@ -5,17 +5,17 @@ import { BlurHeading } from "@/components/ui/blur-heading"
 
 /**
  * Partner logos from /images/logos. They show in their real form, visible by
- * default and emphasised on hover. A couple of the supplied files are
- * white-on-transparent (meant for dark backgrounds) and would vanish on this
- * light section, so those two are inverted to read as dark marks.
+ * default and emphasised on hover. A couple of the supplied files carry a solid
+ * white/black box behind the mark; those are blended with mix-blend-mode:
+ * multiply so the box drops out against this light section background.
  */
-const PARTNERS: { name: string; file: string; invert?: boolean }[] = [
+const PARTNERS: { name: string; file: string; multiply?: boolean }[] = [
   { name: "Luxury Travel Collection", file: "/images/logos/luxury-travel.png" },
   { name: "Virtuoso", file: "/images/logos/virtuoso.png" },
-  { name: "Sanderson Phillips", file: "/images/logos/sanderson-phillips.png", invert: true },
+  { name: "Sanderson Phillips", file: "/images/logos/sanderson-phillips.png", multiply: true },
   { name: "Serandipians", file: "/images/logos/serandipians.png" },
   { name: "The Conscious Travel Foundation", file: "/images/logos/conscious-travel.png" },
-  { name: "PURE Life Experiences", file: "/images/logos/pure.png", invert: true },
+  { name: "PURE Life Experiences", file: "/images/logos/pure.png", multiply: true },
 ]
 
 export function PartnersSection() {
@@ -45,7 +45,7 @@ export function PartnersSection() {
                 alt={p.name}
                 className={cn(
                   "h-[72px] w-auto max-w-[200px] object-contain opacity-80 transition-all duration-300 ease-out group-hover:scale-[1.04] group-hover:opacity-100",
-                  p.invert && "invert",
+                  p.multiply && "mix-blend-multiply",
                 )}
               />
             </a>

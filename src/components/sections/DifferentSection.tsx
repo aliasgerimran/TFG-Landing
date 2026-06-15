@@ -22,10 +22,14 @@ const TITLE_PARTS: HeadingPart[] = [
 
 /**
  * Fixed min-height for the slide text block (heading + body copy), sized to the
- * LONGEST slide so the Prev / Next buttons never shift between slides. Copy
- * top-aligns within this space. Tune per breakpoint here as copy changes.
+ * LONGEST slide at each breakpoint so the Prev / Next buttons never shift
+ * between slides on any screen size. Copy top-aligns within this space.
+ * Values are the tallest measured slide per band (+ a small buffer); the md
+ * step is the largest because the two-column layout narrows the text column and
+ * the `md:text-3xl` heading wraps. Tune here as copy changes.
  */
-const TEXT_BLOCK_MIN_H = "min-h-[248px] sm:min-h-[224px] md:min-h-[208px]"
+const TEXT_BLOCK_MIN_H =
+  "min-h-[248px] sm:min-h-[208px] md:min-h-[292px] lg:min-h-[212px] xl:min-h-[196px]"
 
 const SLIDES: Slide[] = [
   {
